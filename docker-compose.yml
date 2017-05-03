@@ -1,0 +1,19 @@
+version: '2'
+
+services:
+  ruby-dev:
+    container_name: ruby-dev
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: yanhao/ruby-dev:2.4.0
+    hostname: ruby.dev
+    ports:
+      - "8000:8000"
+    working_dir: /home/docker/src
+    volumes:
+      - ./src:/home/docker/src
+      - $SSH_AUTH_SOCK:/ssh-agent
+      - "${HOME}/.vbuf:/home/docker/.vbuf"
+    environment:
+      - SSH_AUTH_SOCK=/ssh-agent
