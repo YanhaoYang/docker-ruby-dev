@@ -13,15 +13,7 @@ export EDITOR='vim'
 
 alias vimgo='vim -u ~/.vimrc.go'
 alias vg='vim -u ~/.vimrc.go'
+alias bi='bundle install'
+alias be='bundle exec'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# Find Go source code files excluding vendor folder
-function gosrc() {
-  find . -path ./vendor -prune -o -name '*.go'
-}
-
-# Find Go packages excluding vendor folder
-function gopkg() {
-  go list ./... | grep -v /vendor/
-}
