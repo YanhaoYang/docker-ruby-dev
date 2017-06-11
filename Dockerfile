@@ -3,7 +3,9 @@ MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Development tools
 RUN \
+  curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
   apt-get update && \
+  apt-get install -y nodejs && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
   # for build vim
   python-dev libncurses5-dev libncursesw5-dev \
