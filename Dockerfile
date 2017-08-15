@@ -17,6 +17,7 @@ RUN \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+COPY files/rtags /usr/local/bin/rtags
 COPY files/nginx.conf /etc/nginx/nginx.conf
 COPY files/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
 
