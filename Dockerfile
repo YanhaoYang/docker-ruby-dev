@@ -1,4 +1,4 @@
-FROM ruby:2.4.0
+FROM ruby:2.5.0
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Development tools
