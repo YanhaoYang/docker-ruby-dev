@@ -1,9 +1,9 @@
-FROM ruby:2.5.0
+FROM ruby:2.5.1
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Development tools
 RUN \
-  curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+  curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
   apt-get update && \
   apt-get install -y nodejs && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -18,6 +18,7 @@ RUN \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY files/rtags /usr/local/bin/rtags
+COPY files/gs /usr/local/bin/gs
 COPY files/nginx.conf /etc/nginx/nginx.conf
 COPY files/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
 

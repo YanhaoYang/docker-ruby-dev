@@ -2,18 +2,35 @@ version: '2'
 
 services:
   ruby-dev:
-    container_name: ruby-dev
     build:
       context: .
       dockerfile: Dockerfile
-    image: yanhao/ruby-dev:2.4.0
+    image: yanhao/ruby-dev:2.5.1
     hostname: ruby.dev
     ports:
       - "8000:8000"
     working_dir: /home/docker/src
     volumes:
       - ./src:/home/docker/src
-      - $SSH_AUTH_SOCK:/ssh-agent
+      - ./config:/home/docker/.config
       - "${HOME}/.vbuf:/home/docker/.vbuf"
+    volumes_from:
+      - ssh-agent
     environment:
-      - SSH_AUTH_SOCK=/ssh-agent
+      - HISTFILE=/home/docker/.config/.zsh_history
+      - DATABASE_URL=postgres://postgres:a@postgres
+      - SSH_AUTH_SOCK=/.ssh-agent/proxy-socket
+      - GIT_AUTHOR_NAME=Yanhao Yang
+      - GIT_AUTHOR_EMAIL=me@example.com
+      - GIT_COMMITTER_NAME=Yanhao Yang
+      - GIT_COMMITTER_EMAIL=me@example.com
+
+  postgres:
+    image: postgres:10
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: a
+
+  ssh-agent:
+    image: yanhao/ssh-agent
