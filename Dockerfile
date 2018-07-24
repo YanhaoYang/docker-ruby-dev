@@ -1,16 +1,20 @@
-FROM ruby:2.5.0
+FROM ruby:2.5.1
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Development tools
 RUN \
+  apt-get update && \
+  apt-get install -y apt-transport-https && \
+	curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
+	echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
   curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
   apt-get update && \
-  apt-get install -y nodejs && \
+  apt-get install -y nodejs yarn && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
   # for build vim
   python-dev libncurses5-dev libncursesw5-dev \
   python3-dev ruby-dev lua5.1 liblua5.1-dev \
-  zsh silversearcher-ag curl locales sudo \
+  zsh silversearcher-ag locales sudo \
   && \
   apt-get autoremove -y && \
   apt-get autoclean && \
@@ -29,7 +33,6 @@ RUN \
   useradd --gid 1000 --uid 1000 --create-home docker && \
   echo "docker ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/user && \
   chmod 0440 /etc/sudoers.d/user && \
-  chmod +x /usr/local/bin/dumb-init && \
   # build vim
   cd /tmp && \
   git clone https://github.com/vim/vim.git && \
@@ -67,4 +70,4 @@ RUN \
 
 COPY files/.zshrc /home/docker/.zshrc
 
-ENTRYPOINT ["/usr/local/bin/web_server", "--"]
+ENTRYPOINT ["/usr/local/bin/web_server"]

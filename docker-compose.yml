@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: yanhao/ruby-dev:2.5.0
+    image: yanhao/ruby-dev:2.5.1
     hostname: ruby.dev
     working_dir: /home/docker/src
     volumes:
@@ -36,6 +36,6 @@ services:
   ingress:
     image: openresty/openresty:1.13.6.2-alpine
     volumes:
-      - .files/nginx:/etc/nginx
+      - ./files/nginx:/etc/nginx
     ports:
       - "80:80"

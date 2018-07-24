@@ -17,3 +17,7 @@ alias bi='bundle install'
 alias be='bundle exec'
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# Local config
+[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
+[[ -f ~/.env.local ]] && source ~/.env.local
