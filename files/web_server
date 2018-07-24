@@ -5,6 +5,7 @@ require 'webrick'
 server = WEBrick::HTTPServer.new :Port => 65533
 
 trap 'INT' do server.shutdown end
+trap 'TERM' do server.shutdown end
 
 server.mount_proc '/' do |req, res|
   res.body = "Hello, world!\n"
