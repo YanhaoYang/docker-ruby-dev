@@ -30,7 +30,7 @@ do
   echo "d. diff"
   echo "a. add -Av"
   echo "f. fetch -v"
-  echo "p. gpc"
+  echo "p. push"
   echo "u. pull -v"
   echo "b. branch"
   echo "o. checkout"
@@ -58,8 +58,8 @@ do
   echo ">> git fetch -v"
     git fetch -v
   elif [ "$COMMAND" = "p" ] ; then
-  echo ">> gpc"
-    gpc
+  echo ">> push"
+    ggp
   elif [ "$COMMAND" = "u" ] ; then
   echo ">> git pull -v"
     git pull -v

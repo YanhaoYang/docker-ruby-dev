@@ -5,10 +5,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: yanhao/ruby-dev:2.5.1
+    image: yanhao/ruby-dev:2.5.0
     hostname: ruby.dev
-    ports:
-      - "8000:8000"
     working_dir: /home/docker/src
     volumes:
       - ./src:/home/docker/src
@@ -34,3 +32,10 @@ services:
 
   ssh-agent:
     image: yanhao/ssh-agent
+
+  ingress:
+    image: openresty/openresty:1.13.6.2-alpine
+    volumes:
+      - .files/nginx:/etc/nginx
+    ports:
+      - "80:80"

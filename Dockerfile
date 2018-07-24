@@ -10,7 +10,7 @@ RUN \
   # for build vim
   python-dev libncurses5-dev libncursesw5-dev \
   python3-dev ruby-dev lua5.1 liblua5.1-dev \
-  zsh silversearcher-ag curl nginx locales sudo \
+  zsh silversearcher-ag curl locales sudo \
   && \
   apt-get autoremove -y && \
   apt-get autoclean && \
@@ -19,8 +19,7 @@ RUN \
 
 COPY files/rtags /usr/local/bin/rtags
 COPY files/gs /usr/local/bin/gs
-COPY files/nginx.conf /etc/nginx/nginx.conf
-COPY files/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
+COPY files/web_server /usr/local/bin/web_server
 
 RUN \
   chsh --shell /bin/zsh && \
@@ -30,8 +29,6 @@ RUN \
   useradd --gid 1000 --uid 1000 --create-home docker && \
   echo "docker ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/user && \
   chmod 0440 /etc/sudoers.d/user && \
-  chown -R docker:docker /var/lib/nginx && \
-  chown -R docker:docker /var/log/nginx && \
   chmod +x /usr/local/bin/dumb-init && \
   # build vim
   cd /tmp && \
@@ -70,5 +67,4 @@ RUN \
 
 COPY files/.zshrc /home/docker/.zshrc
 
-ENTRYPOINT ["/usr/local/bin/dumb-init", "--"]
-CMD ["nginx", "-g", "daemon off;", "-c", "/etc/nginx/nginx.conf"]
+ENTRYPOINT ["/usr/local/bin/web_server", "--"]
