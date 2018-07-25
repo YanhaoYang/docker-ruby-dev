@@ -16,6 +16,10 @@ alias vg='vim -u ~/.vimrc.go'
 alias bi='bundle install'
 alias be='bundle exec'
 
+function tags(){
+	ripper-tags --tag-file=tmp/tags --recursive --exclude=node_modules --verbose --tag-relative=..
+}
+
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # Local config
