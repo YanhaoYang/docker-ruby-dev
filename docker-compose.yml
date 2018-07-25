@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: yanhao/ruby-dev:2.5.1
+    image: yanhao/ruby-dev:2.5.0
     hostname: ruby.dev
     working_dir: /home/docker/src
     volumes:
