@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: yanhao/ruby-dev:2.5.0
+    image: yanhao/ruby-dev:2.6.0
     hostname: ruby.dev
     working_dir: /home/docker/src
     volumes:
@@ -22,6 +22,9 @@ services:
       - GIT_AUTHOR_EMAIL=me@example.com
       - GIT_COMMITTER_NAME=Yanhao Yang
       - GIT_COMMITTER_EMAIL=me@example.com
+    #labels:
+      #- "traefik.frontend.rule=Host:ruby.localhost"
+      #- "traefik.port=8000"
 
   postgres:
     image: postgres:10
@@ -34,8 +37,13 @@ services:
     image: yanhao/ssh-agent
 
   ingress:
-    image: openresty/openresty:1.13.6.2-alpine
-    volumes:
-      - ./files/nginx:/etc/nginx
+    image: traefik
+    command: --api --docker --docker.domain=localhost
     ports:
       - "80:80"
+      - "8088:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.frontend.rule=Host:dashboard.localhost"
+      - "traefik.port=8080"

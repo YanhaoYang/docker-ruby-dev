@@ -1,15 +1,27 @@
-FROM ruby:2.5.0
+FROM ruby:2.6.0
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
+
+# Update system and install main dependencies
+RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
+	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
+	apt-get update -y && \
+	apt-get install -y --no-install-recommends wget xvfb unzip &&\
+	apt-get install -y google-chrome-stable
+
+# Chromedriver Environment variables
+ENV CHROMEDRIVER_VERSION 2.39
+ENV CHROMEDRIVER_DIR /usr/bin
+
+# Download and install Chromedriver
+RUN wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" && \
+	unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR && \
+	rm $CHROMEDRIVER_DIR/chromedriver*.zip
 
 # Development tools
 RUN \
   apt-get update && \
   apt-get install -y apt-transport-https && \
-	curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - && \
-	echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list && \
-  curl -sL https://deb.nodesource.com/setup_10.x | bash - && \
   apt-get update && \
-  apt-get install -y nodejs yarn && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
   # for build vim
   python-dev libncurses5-dev libncursesw5-dev \
@@ -23,7 +35,7 @@ RUN \
 
 COPY files/rtags /usr/local/bin/rtags
 COPY files/gs /usr/local/bin/gs
-COPY files/web_server /usr/local/bin/web_server
+COPY files/dummy_server /usr/local/bin/dummy_server
 
 RUN \
   chsh --shell /bin/zsh && \
@@ -70,4 +82,18 @@ RUN \
 
 COPY files/.zshrc /home/docker/.zshrc
 
-ENTRYPOINT ["/usr/local/bin/web_server"]
+# nvm && yarn
+ENV NODE_VERSION v10.15.0
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash && \
+  bash -c "\
+    source $HOME/.nvm/nvm.sh && \
+    nvm install $NODE_VERSION && \
+    nvm use $NODE_VERSION && \
+    npm install -g yarn && \
+    echo 'export NVM_DIR=\"$HOME/.nvm\"' >> ~/.zshrc.local && \
+    echo '[ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"' >> ~/.zshrc.local && \
+    echo 'nvm use $NODE_VERSION' >> ~/.zshrc.local"
+
+EXPOSE 3000
+
+ENTRYPOINT ["/usr/local/bin/dummy_server"]
