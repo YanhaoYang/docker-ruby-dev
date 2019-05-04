@@ -22,9 +22,6 @@ services:
       - GIT_AUTHOR_EMAIL=me@example.com
       - GIT_COMMITTER_NAME=Yanhao Yang
       - GIT_COMMITTER_EMAIL=me@example.com
-    labels:
-      - "traefik.frontend.rule=Host:ruby.localhost"
-      - "traefik.port=3000"
 
   postgres:
     image: postgres:10
@@ -38,7 +35,7 @@ services:
 
   ingress:
     image: traefik
-    command: --api --docker
+    command: --api --docker --docker.domain=localhost
     ports:
       - "80:80"
       - "8088:8080"

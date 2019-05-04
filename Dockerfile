@@ -1,19 +1,21 @@
-FROM ruby:2.6.0
+FROM ruby:2.6.3
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Update system and install main dependencies
 RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - && \
 	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list && \
 	apt-get update -y && \
-	apt-get install -y --no-install-recommends wget xvfb unzip &&\
+	apt-get install -y --no-install-recommends wget unzip &&\
 	apt-get install -y google-chrome-stable
 
 # Chromedriver Environment variables
-ENV CHROMEDRIVER_VERSION 2.39
 ENV CHROMEDRIVER_DIR /usr/bin
 
 # Download and install Chromedriver
-RUN wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/$CHROMEDRIVER_VERSION/chromedriver_linux64.zip" && \
+RUN chrome_version=$(google-chrome-stable --version | awk -F'[ \.]' '{ print $3 }') && \
+  chromedriver_version=$(curl http://chromedriver.storage.googleapis.com/LATEST_RELEASE_${chrome_version}) && \
+  echo $chromedriver_version && \
+  wget -q --continue -P $CHROMEDRIVER_DIR "http://chromedriver.storage.googleapis.com/${chromedriver_version}/chromedriver_linux64.zip" && \
 	unzip $CHROMEDRIVER_DIR/chromedriver* -d $CHROMEDRIVER_DIR && \
 	rm $CHROMEDRIVER_DIR/chromedriver*.zip
 
@@ -83,7 +85,7 @@ RUN \
 COPY files/.zshrc /home/docker/.zshrc
 
 # nvm && yarn
-ENV NODE_VERSION v10.15.0
+ENV NODE_VERSION v10.15.3
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash && \
   bash -c "\
     source $HOME/.nvm/nvm.sh && \
@@ -94,4 +96,6 @@ RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.s
     echo '[ -s \"\$NVM_DIR/nvm.sh\" ] && . \"\$NVM_DIR/nvm.sh\"' >> ~/.zshrc.local && \
     echo 'nvm use $NODE_VERSION' >> ~/.zshrc.local"
 
-ENTRYPOINT ["/usr/local/bin/dummy_server"]
+EXPOSE 3000
+
+CMD ["/usr/local/bin/dummy_server"]
