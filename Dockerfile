@@ -1,4 +1,4 @@
-FROM ruby:2.5.0
+FROM ruby:2.6.3
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Update system and install main dependencies
@@ -28,14 +28,13 @@ RUN \
   # for build vim
   python-dev libncurses5-dev libncursesw5-dev \
   python3-dev ruby-dev lua5.1 liblua5.1-dev \
-  zsh silversearcher-ag locales sudo \
+  zsh silversearcher-ag locales sudo less \
   && \
   apt-get autoremove -y && \
   apt-get autoclean && \
   apt-get clean && \
   rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-COPY files/rtags /usr/local/bin/rtags
 COPY files/gs /usr/local/bin/gs
 COPY files/dummy_server /usr/local/bin/dummy_server
 
@@ -74,13 +73,16 @@ ENV SHELL=/usr/bin/zsh
 
 USER docker
 
+COPY vim /home/docker/.vim
+
 RUN \
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" && \
   git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting && \
   git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
-  git clone https://github.com/YanhaoYang/vim-for-ruby.git ~/.vim && \
+  sudo chown --recursive docker:docker ~/.vim && cd ~/.vim && ./setup.sh && cd ~ && \
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
-  ~/.fzf/install --all
+  ~/.fzf/install --all && \
+  gem install ripper-tags
 
 COPY files/.zshrc /home/docker/.zshrc
 
