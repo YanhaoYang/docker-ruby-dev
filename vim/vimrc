@@ -193,15 +193,18 @@ nnoremap gb :Gblame<CR>
 nnoremap gl :%!xmllint --format -<CR>
 nnoremap gp :PreviewMarkdown<CR>
 
+" https://github.com/wincent/clipper
+nnoremap yc :call system('nc -N localhost 8377', @0)<CR>
+
 " Allow to copy/paste between VIM instances {
 "copy the current visual selection to ~/.vbuf
-vmap <leader>y :w! ~/.vbuf<cr>
+vmap <leader>y :w! ~/.share/.vbuf<cr>
 
 "copy the current line to the buffer file if no visual selection
-nmap <leader>y :.w! ~/.vbuf<cr>
+nmap <leader>y :.w! ~/.share/.vbuf<cr>
 
 "paste the contents of the buffer file
-nmap <leader>p :r ~/.vbuf<cr>
+nmap <leader>p :r ~/.share/.vbuf<cr>
 " }
 
 " turn off search highlighting (type <leader>n to de-select everything)
