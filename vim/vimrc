@@ -154,7 +154,7 @@ function! InitializeDirectories()
     endif
   endfor
 endfunction
-"call InitializeDirectories()
+call InitializeDirectories()
 
 " tpope/vim-rails {
 let g:rubycomplete_buffer_loading = 1
@@ -235,5 +235,3 @@ nmap <Leader>t= :Tabularize /=<CR>
 vmap <Leader>t= :Tabularize /=<CR>
 nmap <Leader>t: :Tabularize /:\zs<CR>
 vmap <Leader>t: :Tabularize /:\zs<CR>
-
-nmap <Leader>rr :%s/rspec \(.\+\) # .\+/\1 \\/gc<CR>
