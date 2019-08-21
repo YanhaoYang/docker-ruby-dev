@@ -1,3 +1,5 @@
+" vim:ft=vim:fdm=marker:fdl=0
+
 set nocompatible
 filetype off
 
@@ -12,14 +14,6 @@ Plugin 'Yggdroot/indentLine'
 Plugin 'tpope/vim-surround'
 Plugin 'AutoClose'
 Plugin 'Lokaltog/vim-easymotion'
-Plugin 'ervandew/supertab'
-
-Plugin 'tomtom/tlib_vim'
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'garbas/vim-snipmate'
-Plugin 'YanhaoYang/snipmate-snippets'
-
-Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
 
 Plugin 'vim-ruby/vim-ruby'
@@ -37,5 +31,8 @@ Plugin 'junegunn/fzf.vim'
 Plugin 'elzr/vim-json'
 
 Plugin 'YanhaoYang/neodark.vim'
+
+Plugin 'neoclide/coc.nvim'
+Plugin 'yanhao-a2b/vim-snippets'
 
 call vundle#end()
