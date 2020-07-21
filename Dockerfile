@@ -1,4 +1,4 @@
-FROM ruby:2.6.3
+FROM ruby:2.7.1
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Update system and install main dependencies
@@ -28,7 +28,7 @@ RUN \
   # for build vim
   python-dev libncurses5-dev libncursesw5-dev \
   python3-dev ruby-dev lua5.1 liblua5.1-dev \
-  zsh silversearcher-ag locales sudo less netcat-openbsd \
+  zsh silversearcher-ag locales sudo less netcat-openbsd tmux \
   && \
   apt-get autoremove -y && \
   apt-get autoclean && \
@@ -103,6 +103,12 @@ COPY --chown=docker:docker config/vim /home/docker/.vim
 RUN bash -c "\
   source $HOME/.nvm/nvm.sh && \
   cd ~/.vim && ./setup.sh"
+
+# tmux new-session -c $PWD
+RUN cd && \
+  git clone https://github.com/gpakosz/.tmux.git && \
+  ln -s -f .tmux/.tmux.conf && \
+  cp .tmux/.tmux.conf.local .
 
 EXPOSE 3000
 

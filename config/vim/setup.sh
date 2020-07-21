@@ -1,11 +1,17 @@
 #!/bin/bash
 
+sudo gem install solargraph
+
 if [[ ! -d bundle/coc.nvim ]]; then
-  git clone https://github.com/neoclide/coc.nvim.git ~/.vim/bundle/coc.nvim
-  cd ~/.vim/bundle/coc.nvim && yarn install && cd ~/.vim
+  mkdir -p $HOME/.config/coc
+  git clone https://github.com/neoclide/coc.nvim.git bundle/coc.nvim
+  cd bundle/coc.nvim && yarn install
+  mkdir -p $HOME/.config/coc/extensions && \
+    cd $HOME/.config/coc/extensions && \
+    yarn add coc-snippets && \
+    yarn add coc-solargraph
+  cd ~/.vim
 fi
 
 [[ -d bundle/Vundle.vim ]] || git clone https://github.com/VundleVim/Vundle.vim.git bundle/Vundle.vim
 vim --not-a-term -u ./plugins +BundleInstall +qa
-vim --not-a-term -c ":CocInstall coc-snippets | sleep 5000m | qa"
-vim --not-a-term -c ":CocInstall coc-solargraph | sleep 5000m | qa"
