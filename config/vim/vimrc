@@ -223,7 +223,7 @@ endfunction
 nmap <silent> <leader>td :!bundle exec rspec -fd %<CR>
 
 nmap <silent> <leader>tt :silent call RipperTags()<CR>
-autocmd BufWritePost *.rb call RipperTagsIfInProject()
+" autocmd BufWritePost *.rb call RipperTagsIfInProject()
 " }
 
 " http://vimcasts.org/episodes/aligning-text-with-tabular-vim/

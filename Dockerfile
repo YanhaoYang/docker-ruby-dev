@@ -1,4 +1,4 @@
-FROM ruby:2.7.1
+FROM ruby:3.0.0
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Update system and install main dependencies
@@ -46,7 +46,7 @@ RUN \
   # build vim
   cd /tmp && \
   git clone https://github.com/vim/vim.git && \
-  cd /tmp/vim && \
+  cd /tmp/vim && git checkout v8.2.1222 && \
   ./configure \
     --with-features=huge \
     --enable-multibyte \
@@ -89,7 +89,8 @@ RUN \
   git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && \
   git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf && \
   ~/.fzf/install --all && \
-  gem install ripper-tags
+  gem install ripper-tags && \
+  gem install webrick
 
 COPY --chown=docker:docker bin/gs /usr/local/bin/gs
 COPY --chown=docker:docker bin/nb /usr/local/bin/nb
