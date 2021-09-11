@@ -1,4 +1,4 @@
-FROM ruby:3.0.0
+FROM ruby:3.0.2
 MAINTAINER Yanhao Yang <yanhao.yang@gmail.com>
 
 # Update system and install main dependencies
@@ -26,7 +26,7 @@ RUN \
   apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
   # for build vim
-  python-dev libncurses5-dev libncursesw5-dev \
+  libncurses5-dev libncursesw5-dev \
   python3-dev ruby-dev lua5.1 liblua5.1-dev \
   zsh silversearcher-ag locales sudo less netcat-openbsd tmux \
   && \
@@ -51,8 +51,6 @@ RUN \
     --with-features=huge \
     --enable-multibyte \
     --enable-rubyinterp=yes \
-    --enable-pythoninterp=yes \
-    --with-python-config-dir=/usr/lib/python2.7/config-x86_64-linux-gnu \
     --enable-python3interp=yes \
     --with-python3-config-dir=/usr/lib/python3.4/config-3.4m-x86_64-linux-gnu \
     --enable-luainterp=yes \
@@ -71,8 +69,8 @@ ENV SHELL=/usr/bin/zsh
 USER docker
 
 # nvm && yarn
-ENV NODE_VERSION v10.16.0
-RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash && \
+ENV NODE_VERSION v14.17.6
+RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.38.0/install.sh | bash && \
   bash -c "\
     source $HOME/.nvm/nvm.sh && \
     nvm install $NODE_VERSION && \
