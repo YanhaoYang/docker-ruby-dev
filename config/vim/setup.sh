@@ -5,7 +5,7 @@ sudo gem install solargraph
 if [[ ! -d bundle/coc.nvim ]]; then
   mkdir -p $HOME/.config/coc
   git clone https://github.com/neoclide/coc.nvim.git bundle/coc.nvim
-  cd bundle/coc.nvim && yarn install
+  cd bundle/coc.nvim && npm ci
   mkdir -p $HOME/.config/coc/extensions && \
     cd $HOME/.config/coc/extensions && \
     yarn add coc-snippets && \
